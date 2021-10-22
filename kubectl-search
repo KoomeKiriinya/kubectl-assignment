@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#get all resources and length
+all_resources=$(kubectl get all --all-namespaces -o json)
+number_of_resources=$(echo $all_resources|jq ".items|length")
+pointer_length=$((number_of_resources-1))
+
+# loop through resource and check if argument passed in metadata name,labels or annotations
+echo "---"
+for pointer in $(seq 0 ${pointer_length}); do
+    name=$(echo $all_resources|jq ".items[${pointer}].metadata.name")
+    labels=$(echo $all_resources|jq ".items[${pointer}].metadata.labels")
+    annotations=$(echo $all_resources|jq ".items[${pointer}].metadata.annotations")
+    if [[ $name =~ $1 ]] || [[ $labels =~ $1 ]] || [[ $annotations =~ $1 ]]; then
+        # convert to yaml
+        echo $all_resources|jq ".items[${pointer}]"| yq e -P -
+        echo "---"
+    fi
+   
+    
+done
