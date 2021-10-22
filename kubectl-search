@@ -14,7 +14,9 @@ for pointer in $(seq 0 ${pointer_length}); do
     if [[ $name =~ $1 ]] || [[ $labels =~ $1 ]] || [[ $annotations =~ $1 ]]; then
         # convert to yaml
         echo $all_resources|jq ".items[${pointer}]"| yq e -P -
-        echo "---"
+        if [[ $pointer < $pointer_length ]]; then
+            echo "---";
+        fi
     fi
    
     
