@@ -8,15 +8,19 @@ pointer_length=$((number_of_resources-1))
 # loop through resource and check if argument passed in metadata name,labels or annotations
 echo "---"
 for pointer in $(seq 0 ${pointer_length}); do
+
     name=$(echo $all_resources|jq ".items[${pointer}].metadata.name")
     labels=$(echo $all_resources|jq ".items[${pointer}].metadata.labels")
     annotations=$(echo $all_resources|jq ".items[${pointer}].metadata.annotations")
+    
     if [[ $name =~ $1 ]] || [[ $labels =~ $1 ]] || [[ $annotations =~ $1 ]]; then
         # convert to yaml
         echo $all_resources|jq ".items[${pointer}]"| yq e -P -
+        
         if [[ $pointer < $pointer_length ]]; then
             echo "---";
         fi
+
     fi
    
     
