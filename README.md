@@ -1,7 +1,6 @@
 ## Kubectl plugin for getting labels,annotations and name with string passed
 
-To use this plugin ensure you have ```jq``` and ```yq``` installed,
-installation instructions are [here](https://stedolan.github.io/jq/download/) and [here](https://mikefarah.gitbook.io/yq/)
+To use this plugin ensure you have ```jq``` installation instructions are [here](https://stedolan.github.io/jq/download/)
 
 ``` markdown
 
