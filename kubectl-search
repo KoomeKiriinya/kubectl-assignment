@@ -7,15 +7,14 @@ pointer_length=$((number_of_resources-1))
 
 # loop through resource and check if argument passed in metadata name,labels or annotations
 for pointer in $(seq 0 ${pointer_length}); do
-
-    name=$(echo $all_resources|jq ".items[${pointer}].metadata.name")
-    labels=$(echo $all_resources|jq ".items[${pointer}].metadata.labels")
-    annotations=$(echo $all_resources|jq ".items[${pointer}].metadata.annotations")
-    
+    resource=$(echo $all_resources | jq ".items[${pointer}]")
+    metadata=$(echo $resource|jq ".metadata")
+    name=$(echo $metadata| jq ".name")
+    labels=$(echo $metadata| jq ".labels")
+    annotations=$(echo $metadata| jq ".annotations")
     if [[ $name =~ $1 ]] || [[ $labels =~ $1 ]] || [[ $annotations =~ $1 ]]; then
-        # convert to yaml
-        kind=$(echo $all_resources | jq ".items[${pointer}].kind")
-        namespace=$(echo $all_resources | jq ".items[${pointer}].metadata.namespace")
+        kind=$(echo $resource | jq ".kind")
+        namespace=$(echo $metadata| jq ".namespace")
         echo $namespace/$kind/$name
     fi
    
